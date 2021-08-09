@@ -1,0 +1,245 @@
+.tickets img {
+  margin: 36px auto -36px;
+}
+
+.tickets {
+  background-color: #f4f9ff;
+}
+
+.inner {
+  width: 1284px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  padding-top: 123px;
+}
+
+.tickets h2 {
+  font-weight: 500;
+  font-size: 48px;
+  line-height: 60px;
+  color: #ff8863;
+  margin-bottom: 36px;
+}
+
+.form {
+  background: #ffffff;
+  border-radius: 50px;
+  padding: 60px;
+  position: relative;
+}
+
+.form .fieldset {
+  border: 0ch;
+}
+
+.form h3 {
+  font-weight: 500;
+  font-size: 30px;
+  line-height: 38px;
+  color: #ff8863;
+  margin-bottom: 24px;
+}
+
+.form label {
+  font-size: 18px;
+  line-height: 26px;
+  padding: 8px 16px;
+  border-radius: 52px;
+  cursor: pointer;
+  border: 2px solid #38cb84;
+  color: #38cb84;
+  text-align: center;
+  width: fit-content;
+  margin-right: 16px;
+}
+
+.form label.active {
+  background: #38cb84;
+  color: #fff;
+}
+
+.form label:hover {
+  background: #d5ffea;
+}
+
+.spektakl {
+  margin-bottom: 64px;
+}
+.dates span,
+.time span {
+  font-size: 18px;
+  line-height: 26px;
+  color: #ff8863;
+  margin-right: 16px;
+}
+
+.dates p {
+  margin: 0;
+  padding: 0;
+}
+
+.dates label {
+  display: flex;
+  flex-direction: column;
+}
+
+.dates {
+  display: flex;
+  align-items: center;
+}
+
+.form label p {
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 12px;
+  text-align: center;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.time {
+  margin-top: 24px;
+  margin-bottom: 64px;
+}
+
+.counter {
+  border: 2px solid #ff8863;
+  border-radius: 52px;
+  display: flex;
+  padding: 8px 10px;
+  place-items: center;
+  margin: 0 32px 0 16px;
+}
+
+.items,
+.items .item {
+  display: flex;
+  align-items: center;
+}
+
+.items {
+  align-items: center;
+}
+
+.count {
+  margin: 0 12px;
+  width: 60px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 26px;
+}
+.item span:nth-child(1) {
+  font-size: 18px;
+  line-height: 26px;
+  color: #ff8863;
+}
+
+.plus,
+.minus {
+  display: flex;
+  cursor: pointer;
+}
+
+.itogo {
+  font-weight: 500;
+  font-size: 30px;
+  line-height: 38px;
+  color: #38cb84;
+  margin-top: 24px;
+}
+
+.exact span {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 26px;
+  margin-right: 24px;
+  color: #38cb84;
+  display: inline-flex;
+}
+
+.exact span:nth-child(1) {
+  color: #ff8863;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+}
+
+.final {
+  margin-top: 64px;
+}
+
+.form button {
+  position: absolute;
+  right: 64px;
+  bottom: 64px;
+}
+
+@media (max-width: 666px) {
+  .inner {
+    width: calc(100% - 32px);
+  }
+
+  .form {
+    background-color: transparent;
+    padding: 0px;
+  }
+
+  .inner h2 {
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 38px;
+  }
+
+  .inner h3 {
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 38px;
+  }
+
+  .items {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .items .item {
+    margin-bottom: 32px;
+  }
+
+  .tickets img {
+    width: 100%;
+    margin-bottom: 0;
+  }
+
+  .exact span:nth-child(1) {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 26px;
+  }
+
+  .exact span {
+    margin-bottom: 16px;
+  }
+
+  .tickets button {
+    width: 100%;
+    margin-top: 16px;
+    position: initial;
+  }
+
+  .dates,
+  .spektakl {
+    overflow-x: scroll;
+  }
+
+  .tickets label {
+    width: 100%;
+    min-width: max-content;
+  }
+
+  .spektakl {
+    display: flex;
+  }
+}

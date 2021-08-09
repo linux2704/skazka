@@ -1,0 +1,50 @@
+.main {
+  margin-top: 170px;
+}
+
+.main h2 {
+  font-weight: 500;
+  font-size: 48px;
+  line-height: 60px;
+  color: rgba(98, 173, 242, 1);
+  margin: 0;
+}
+
+.items {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 36px;
+}
+
+.item p {
+  color: rgba(88, 127, 185, 1);
+  font-size: 18px;
+  line-height: 28px;
+  width: 75%;
+}
+
+@media (max-width: 666px) {
+  .main {
+    margin-top: 32px;
+  }
+
+  .item {
+    background: #ffffff;
+    border-radius: 32px;
+  }
+  .items {
+    grid-auto-flow: column;
+    overflow: scroll;
+    width: 100%;
+  }
+
+  .item img {
+    border-radius: 32px;
+  }
+
+  .item p {
+    width: 90%;
+    padding: 16px;
+  }
+}

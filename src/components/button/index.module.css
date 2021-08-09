@@ -1,0 +1,44 @@
+button {
+  background: #ff8863;
+  border-radius: 42px;
+  padding: 8px 16px;
+  outline: none;
+  border: 0;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 22px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+button:hover {
+  background-color: rgba(255, 150, 118, 1);
+}
+
+button.secondary {
+  background-color: rgba(88, 127, 185, 1);
+}
+
+button.secondary:hover {
+  background-color: rgba(100, 158, 243, 1);
+}
+
+button.large {
+  font-weight: 500;
+  line-height: 18px;
+  padding: 16px 32px;
+  letter-spacing: 0.04em;
+}
+
+button.three {
+  background-color: rgba(56, 203, 132, 1);
+}
+
+button.three:hover {
+  background-color: rgba(89, 237, 165, 1);
+}
+
+button.three:disabled {
+  background-color: #ccc;
+}
