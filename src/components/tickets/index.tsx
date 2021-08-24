@@ -1,5 +1,4 @@
-import { FormEvent } from "react";
-import { useEffect } from "react";
+import { FormEvent, useCallback } from "react";
 import { useState } from "react";
 import { Button } from "../button";
 import s from "./index.module.css";
@@ -13,6 +12,8 @@ export const Tickets = () => {
   const [ctime, setCtime] = useState(0);
 
   const [price, setPrice] = useState(0);
+
+  const [final, setFinal] = useState<any[]>([]);
 
   const [tCount, setTcount] = useState({ adult: 0, child: 0, both: 0 });
   //@ts-ignore
@@ -32,8 +33,8 @@ export const Tickets = () => {
     return f?.slot || "";
   };
 
-  const getTicketsMap = () => {
-    const { adult, child, both } = tCount;
+  const getTicketsMap = useCallback((newTCount) => {
+    const { adult, child, both } = newTCount;
     const adultPrice = adult * 3500;
     const childPrice = child * 2500;
     const bothPrice = both * 6000;
@@ -42,22 +43,30 @@ export const Tickets = () => {
     const childTickets = child ? `(${child}x) Детский билет - ${childPrice} тг.` : null;
     const bothTickets = both ? `(${both}x) Взрослый + Детский билеты - ${bothPrice} тг.` : null;
 
-    return [adultTickets, childTickets, bothTickets];
-  };
+    setFinal([adultTickets, childTickets, bothTickets]);
+  }, []);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     alert(`Извините, оплата находится в разработке. К оплате ${price}`);
   };
 
-  useEffect(() => {
-    const { adult, child, both } = tCount;
-    const adultPrice = adult * 3500;
-    const childPrice = child * 2500;
-    const bothPrice = both * 6000;
+  const lol = useCallback(
+    (newCount) => {
+      setTcount((p) => ({ ...p, ...newCount }));
 
-    setPrice(adultPrice + childPrice + bothPrice);
-  }, [tCount.adult, tCount.child, tCount.both]);
+      const n = { ...tCount, ...newCount };
+
+      const { adult, child, both } = n;
+      const adultPrice = adult * 3500;
+      const childPrice = child * 2500;
+      const bothPrice = both * 6000;
+
+      setPrice(adultPrice + childPrice + bothPrice);
+      getTicketsMap(n);
+    },
+    [tCount, setTcount, setPrice, getTicketsMap]
+  );
 
   return (
     <section id='tickets' className={[s.tickets, "fluid"].join(" ")}>
@@ -88,20 +97,41 @@ export const Tickets = () => {
               <h3>Выберите день и время</h3>
               <div className={s.dates}>
                 <span>День недели:</span>
-                {dates.map(({ id, name, title, date }) => (
-                  <label
-                    key={id}
-                    className={id === cdate ? s.active : ""}
-                    onClick={() => {
-                      setCdate(id);
-                      setCtime(0);
-                    }}
-                  >
-                    <input hidden type='radio' name='dates' />
-                    &nbsp;{title}
-                    <p>{date}</p>
-                  </label>
-                ))}
+                {dates.map(({ id, name, title, date }) => {
+                  if ((spekt === 0 && [0, 1, 2].includes(id)) || (spekt === 1 && [10, 11].includes(id))) {
+                    return (
+                      <label
+                        key={id}
+                        className={id === cdate ? s.active : ""}
+                        onClick={() => {
+                          setCdate(id);
+                          setCtime(0);
+                        }}
+                      >
+                        <input hidden type='radio' name='dates' />
+                        &nbsp;{title}
+                        <p>{date}</p>
+                      </label>
+                    );
+                  }
+                  if (![0, 1].includes(spekt)) {
+                    return (
+                      <label
+                        key={id}
+                        className={id === cdate ? s.active : ""}
+                        onClick={() => {
+                          setCdate(id);
+                          setCtime(0);
+                        }}
+                      >
+                        <input hidden type='radio' name='dates' />
+                        &nbsp;{title}
+                        <p>{date}</p>
+                      </label>
+                    );
+                  }
+                  return null;
+                })}
               </div>
               <div className={s.time}>
                 <span>Время:</span>
@@ -118,15 +148,15 @@ export const Tickets = () => {
               <div className={s.items}>
                 <div className={s.item}>
                   <span>Взрослый билет</span>
-                  <Counter name={"adult"} count={tCount.adult} setCount={setTcount} />
+                  <Counter name={"adult"} count={tCount.adult} setCount={lol} />
                 </div>
                 <div className={s.item}>
                   <span>Детский билет</span>
-                  <Counter name={"child"} count={tCount.child} setCount={setTcount} />
+                  <Counter name={"child"} count={tCount.child} setCount={lol} />
                 </div>
                 <div className={s.item}>
                   <span>Взрослый + Детский билеты</span>
-                  <Counter name={"both"} count={tCount.both} setCount={setTcount} />
+                  <Counter name={"both"} count={tCount.both} setCount={lol} />
                 </div>
               </div>
             </div>
@@ -135,21 +165,15 @@ export const Tickets = () => {
                 <span>
                   {getSpektName()}, {getDate()} - {getTime()}
                 </span>
-                {price
-                  ? getTicketsMap().map((t, index) =>
+                {final.length
+                  ? final.map((t, index) =>
                       t ? (
                         <span className={s.t} key={`${t}-${index}`}>
                           {t}&nbsp;
                           <svg
                             onClick={() => {
-                              setTcount((prev) => {
-                                const key = Object.keys(prev)[index];
-                                return {
-                                  ...prev,
-
-                                  [key]: 0,
-                                };
-                              });
+                              const key = Object.keys(tCount)[index];
+                              lol({ [key]: 0 });
                             }}
                             width='24'
                             height='24'
@@ -171,7 +195,7 @@ export const Tickets = () => {
               </div>
               <p className={s.itogo}>Итого: {price} тг.</p>
             </div>
-            <Button disabled={!price} name='Перейли к оплате' size='large' variant='three' />
+            <Button disabled={!final.length} name='Перейли к оплате' size='large' variant='three' />
           </form>
         </div>
         <img src={img} alt='' />
@@ -182,14 +206,14 @@ export const Tickets = () => {
 
 const Counter = ({ name, count, setCount }: any) => {
   const plus = () => {
-    setCount((prev: any) => ({ ...prev, [name]: count++ }));
+    setCount({ [name]: ++count });
   };
 
   const minus = () => {
     if (count === 0) {
       return;
     }
-    setCount((prev: any) => ({ ...prev, [name]: count-- }));
+    setCount({ [name]: --count });
   };
 
   return (
@@ -225,11 +249,13 @@ const spektakl = [
 ];
 
 const dates = [
-  { id: 0, name: "monday", date: "25 июня", title: "Понедельник" },
-  { id: 1, name: "tuesday", date: "27 июня", title: "Среда" },
-  { id: 2, name: "friday", date: "29 июня", title: "Пятница" },
-  { id: 3, name: "saturday", date: "30 июня", title: "Суббота" },
-  { id: 4, name: "sunday", date: "31 июня", title: "Воскресенье" },
+  { id: 0, name: "monday", date: "16 августа", title: "Понедельник" },
+  { id: 10, name: "tuesday", date: "17 августа", title: "Вторник" },
+  { id: 1, name: "wednesday", date: "18 августа", title: "Среда" },
+  { id: 11, name: "thursday", date: "19 августа", title: "Четверг" },
+  { id: 2, name: "friday", date: "20 августа", title: "Пятница" },
+  { id: 3, name: "saturday", date: "21 августа", title: "Суббота" },
+  { id: 4, name: "sunday", date: "22 августа", title: "Воскресенье" },
 ];
 
 const time = {
@@ -238,8 +264,8 @@ const time = {
     { id: 1, slot: "15:00" },
   ],
   1: [
-    { id: 0, slot: "13:00" },
-    { id: 1, slot: "16:00" },
+    { id: 0, slot: "12:00" },
+    { id: 1, slot: "15:00" },
   ],
   2: [
     { id: 0, slot: "11:00" },
@@ -251,6 +277,14 @@ const time = {
   ],
   4: [
     { id: 0, slot: "13:00" },
+    { id: 1, slot: "15:00" },
+  ],
+  10: [
+    { id: 0, slot: "12:00" },
+    { id: 1, slot: "15:00" },
+  ],
+  11: [
+    { id: 0, slot: "12:00" },
     { id: 1, slot: "15:00" },
   ],
 };

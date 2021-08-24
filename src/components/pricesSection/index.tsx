@@ -34,7 +34,7 @@ export const Prices = () => {
 
 const items = [
   { id: 0, img: img2, price: 5000, text: "Детский билет" },
-  { id: 1, img: img1, price: 25000, text: "Взрослый билет" },
+  { id: 1, img: img1, price: 2500, text: "Взрослый билет" },
   { id: 2, img: img3, price: 6000, text: "Детский + взрослый билеты" },
 ];
 
