@@ -13,8 +13,12 @@ export const MainSection = () => {
             удивительные светлые эмоции.
           </p>
           <div className={s.buttons}>
-            <Button name='Получить консультацию' variant='secondary' size='large' />
-            <Button name='Купить билеты' variant='primary' size='large'></Button>
+            <a href='tel:+7 (771) 01 999 79'>
+              <Button name='Получить консультацию' variant='secondary' size='large' />
+            </a>
+            <a href='#tickets'>
+              <Button name='Купить билеты' variant='primary' size='large'></Button>
+            </a>
           </div>
         </div>
         <img src={mainImg} alt='main' />

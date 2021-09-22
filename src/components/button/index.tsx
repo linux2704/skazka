@@ -16,4 +16,5 @@ interface Props {
   size?: "large";
   color?: string;
   disabled?: boolean;
+  onClick?: any;
 }

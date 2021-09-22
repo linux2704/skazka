@@ -22,7 +22,9 @@ export const SharedHeader = ({ color }: any) => (
         </a>
       ))}
     </nav>
-    <Button name='Купить билеты' variant='primary' className={s.btn} />
+    <a href='#tickets' className={s.btn}>
+      <Button name='Купить билеты' variant='primary' />
+    </a>
     <a href='#tickets'>
       <svg width='36' height='36' viewBox='0 0 36 36' fill='none' xmlns='http://www.w3.org/2000/svg'>
         <rect width='36' height='36' rx='18' fill='#FF8863' />
@@ -34,13 +36,14 @@ export const SharedHeader = ({ color }: any) => (
         />
       </svg>
     </a>
-    <div className={s.drawer}>
+    &nbsp; &nbsp;
+    {/* <div className={s.drawer}>
       <svg width='36' height='36' viewBox='0 0 36 36' fill='none' xmlns='http://www.w3.org/2000/svg'>
         <rect x='8' y='8' width='20' height='4' rx='2' fill='#FF8863' />
         <rect x='8' y='16' width='20' height='4' rx='2' fill='#FF8863' />
         <rect x='8' y='24' width='20' height='4' rx='2' fill='#FF8863' />
       </svg>
-    </div>
+    </div> */}
   </div>
 );
 

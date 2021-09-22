@@ -18,7 +18,9 @@ export const Shows = () => {
                 <h3>{title}</h3>
                 <p className={s.desc}>{desc}</p>
                 <p className={s.text}>{text}</p>
-                <Button name='Купить билет' size='large' />
+                <a href='#tickets'>
+                  <Button name='Купить билет' size='large' />
+                </a>
               </div>
             </div>
           ))}
@@ -35,7 +37,9 @@ export const Shows = () => {
               национальными музыкальными инструментами. Убранство третьей юрты демонстрирует традиционный быт нашего
               народа»
             </p>
-            <Button name='Купить билет' size='large' />
+            <a href='#tickets'>
+              <Button name='Купить билет' size='large' />
+            </a>
           </div>
           <div className={s.right}>
             <img src={annImg} alt='' />

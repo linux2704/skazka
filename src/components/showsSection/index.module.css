@@ -80,6 +80,10 @@
 }
 
 @media (max-width: 666px) {
+  .shows {
+    margin-top: 32px;
+  }
+
   .item {
     grid-template-columns: none;
     grid-auto-flow: row;

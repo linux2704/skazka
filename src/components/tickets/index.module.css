@@ -177,6 +177,14 @@ fieldset {
   bottom: 64px;
 }
 
+.dates label {
+  text-transform: capitalize;
+}
+
+.dates input[name="dates"] + p {
+  text-transform: none;
+}
+
 @media (max-width: 666px) {
   .inner {
     width: calc(100% - 32px);

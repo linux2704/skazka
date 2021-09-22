@@ -3,18 +3,16 @@ import { useState } from "react";
 import { Button } from "../button";
 import s from "./index.module.css";
 import img from "./tickets.png";
+import { spektakl, dates, time } from "./helpers/mocks";
+import { AvailableDates, Counter } from "./components";
+import { createPayment } from "./helpers/payment-helper";
 
 export const Tickets = () => {
   const [spekt, setSpekt] = useState(0);
-
   const [cdate, setCdate] = useState(0);
-
   const [ctime, setCtime] = useState(0);
-
   const [price, setPrice] = useState(0);
-
   const [final, setFinal] = useState<any[]>([]);
-
   const [tCount, setTcount] = useState({ adult: 0, child: 0, both: 0 });
   //@ts-ignore
   const chosenSlot = time[cdate];
@@ -46,12 +44,31 @@ export const Tickets = () => {
     setFinal([adultTickets, childTickets, bothTickets]);
   }, []);
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    alert(`Извините, оплата находится в разработке. К оплате ${price}`);
+  const testParams = {
+    grant_type: "client_credentials",
+    scope: "payment",
+    client_id: "test",
+    client_secret: "yF587AV9Ms94qN2QShFzVR3vFnWkhjbAK3sG",
+    invoiceID: "100000001",
+    amount: price,
+    currency: "KZT",
+    terminal: "67e34d63-102f-4bd1-898e-370781d0074d",
   };
 
-  const lol = useCallback(
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    var formData = new FormData();
+    Object.keys(testParams).forEach((key) => {
+      // @ts-ignore
+      formData.append(key, testParams[key]);
+    });
+
+    const description = `${getSpektName()}, ${getDate()} - ${getTime()}: ${final.join(",")}`;
+
+    await createPayment(formData, { invoiceId: testParams.invoiceID, amount: price, description });
+  };
+
+  const updateCountAndPrice = useCallback(
     (newCount) => {
       setTcount((p) => ({ ...p, ...newCount }));
 
@@ -83,7 +100,6 @@ export const Tickets = () => {
                     className={id === spekt ? s.active : ""}
                     onClick={() => {
                       setSpekt(id);
-                      setCdate(0);
                       setCtime(0);
                     }}
                   >
@@ -97,41 +113,7 @@ export const Tickets = () => {
               <h3>Выберите день и время</h3>
               <div className={s.dates}>
                 <span>День недели:</span>
-                {dates.map(({ id, name, title, date }) => {
-                  if ((spekt === 0 && [0, 1, 2].includes(id)) || (spekt === 1 && [10, 11].includes(id))) {
-                    return (
-                      <label
-                        key={id}
-                        className={id === cdate ? s.active : ""}
-                        onClick={() => {
-                          setCdate(id);
-                          setCtime(0);
-                        }}
-                      >
-                        <input hidden type='radio' name='dates' />
-                        &nbsp;{title}
-                        <p>{date}</p>
-                      </label>
-                    );
-                  }
-                  if (![0, 1].includes(spekt)) {
-                    return (
-                      <label
-                        key={id}
-                        className={id === cdate ? s.active : ""}
-                        onClick={() => {
-                          setCdate(id);
-                          setCtime(0);
-                        }}
-                      >
-                        <input hidden type='radio' name='dates' />
-                        &nbsp;{title}
-                        <p>{date}</p>
-                      </label>
-                    );
-                  }
-                  return null;
-                })}
+                <AvailableDates {...{ spekt, cdate, setCdate, setCtime }} />
               </div>
               <div className={s.time}>
                 <span>Время:</span>
@@ -148,15 +130,15 @@ export const Tickets = () => {
               <div className={s.items}>
                 <div className={s.item}>
                   <span>Взрослый билет</span>
-                  <Counter name={"adult"} count={tCount.adult} setCount={lol} />
+                  <Counter name={"adult"} count={tCount.adult} setCount={updateCountAndPrice} />
                 </div>
                 <div className={s.item}>
                   <span>Детский билет</span>
-                  <Counter name={"child"} count={tCount.child} setCount={lol} />
+                  <Counter name={"child"} count={tCount.child} setCount={updateCountAndPrice} />
                 </div>
                 <div className={s.item}>
                   <span>Взрослый + Детский билеты</span>
-                  <Counter name={"both"} count={tCount.both} setCount={lol} />
+                  <Counter name={"both"} count={tCount.both} setCount={updateCountAndPrice} />
                 </div>
               </div>
             </div>
@@ -173,7 +155,7 @@ export const Tickets = () => {
                           <svg
                             onClick={() => {
                               const key = Object.keys(tCount)[index];
-                              lol({ [key]: 0 });
+                              updateCountAndPrice({ [key]: 0 });
                             }}
                             width='24'
                             height='24'
@@ -195,96 +177,11 @@ export const Tickets = () => {
               </div>
               <p className={s.itogo}>Итого: {price} тг.</p>
             </div>
-            <Button disabled={!final.length} name='Перейли к оплате' size='large' variant='three' />
+            <Button disabled={!final.length || price < 1} name='Перейли к оплате' size='large' variant='three' />
           </form>
         </div>
         <img src={img} alt='' />
       </div>
     </section>
   );
-};
-
-const Counter = ({ name, count, setCount }: any) => {
-  const plus = () => {
-    setCount({ [name]: ++count });
-  };
-
-  const minus = () => {
-    if (count === 0) {
-      return;
-    }
-    setCount({ [name]: --count });
-  };
-
-  return (
-    <div className={s.counter}>
-      <span className={s.minus} onClick={minus}>
-        <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
-          <path
-            d='M12 2C6.477 2 2 6.477 2 12C2 17.523 6.477 22 12 22C17.523 22 22 17.523 22 12C22 6.477 17.523 2 12 2ZM15 13C11.2192 13 12.1735 13 9 13C8.448 13 8 12.552 8 12C8 11.448 8.448 11 9 11H15C15.552 11 16 11.448 16 12C16 12.552 15.552 13 15 13Z'
-            fill='#FF8863'
-          />
-        </svg>
-      </span>
-      <span className={s.count} style={{ color: count < 1 ? "#FF8863" : "#38CB84" }}>
-        {count}
-      </span>
-      <span className={s.plus} onClick={plus}>
-        <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
-          <path
-            d='M12 2C6.477 2 2 6.477 2 12C2 17.523 6.477 22 12 22C17.523 22 22 17.523 22 12C22 6.477 17.523 2 12 2ZM15 13H13V15C13 15.552 12.552 16 12 16C11.448 16 11 15.552 11 15V13H9C8.448 13 8 12.552 8 12C8 11.448 8.448 11 9 11H11V9C11 8.448 11.448 8 12 8C12.552 8 13 8.448 13 9V11H15C15.552 11 16 11.448 16 12C16 12.552 15.552 13 15 13Z'
-            fill='#38CB84'
-          />
-        </svg>
-      </span>
-    </div>
-  );
-};
-
-const spektakl = [
-  { id: 0, name: "kolobok", title: "Спектакль “Колобок”" },
-  { id: 1, name: "aldar", title: "Спектакль “Алдар-Косе”" },
-  { id: 2, name: "travel", title: "Спектакль “Путешествие по сказкам”" },
-  { id: 3, name: "polyana", title: "Сказочная поляна" },
-];
-
-const dates = [
-  { id: 0, name: "monday", date: "16 августа", title: "Понедельник" },
-  { id: 10, name: "tuesday", date: "17 августа", title: "Вторник" },
-  { id: 1, name: "wednesday", date: "18 августа", title: "Среда" },
-  { id: 11, name: "thursday", date: "19 августа", title: "Четверг" },
-  { id: 2, name: "friday", date: "20 августа", title: "Пятница" },
-  { id: 3, name: "saturday", date: "21 августа", title: "Суббота" },
-  { id: 4, name: "sunday", date: "22 августа", title: "Воскресенье" },
-];
-
-const time = {
-  0: [
-    { id: 0, slot: "12:00" },
-    { id: 1, slot: "15:00" },
-  ],
-  1: [
-    { id: 0, slot: "12:00" },
-    { id: 1, slot: "15:00" },
-  ],
-  2: [
-    { id: 0, slot: "11:00" },
-    { id: 1, slot: "17:00" },
-  ],
-  3: [
-    { id: 0, slot: "12:00" },
-    { id: 1, slot: "15:00" },
-  ],
-  4: [
-    { id: 0, slot: "13:00" },
-    { id: 1, slot: "15:00" },
-  ],
-  10: [
-    { id: 0, slot: "12:00" },
-    { id: 1, slot: "15:00" },
-  ],
-  11: [
-    { id: 0, slot: "12:00" },
-    { id: 1, slot: "15:00" },
-  ],
 };

@@ -9,7 +9,9 @@ export const Birthdays = () => {
       <section id='birthdays' className={s.bdays}>
         <div className={s.head}>
           <h2>Дни рождения</h2>
-          <Button name='Получить консультацию' size='large' />
+          <a href='tel:+7 (771) 01 999 79'>
+            <Button name='Получить консультацию' size='large' />
+          </a>
         </div>
       </section>
       <section className={[s.main, "fluid"].join(" ")}>
@@ -44,7 +46,9 @@ export const Birthdays = () => {
           <img src={img2} alt='' />
         </div>
       </section>
-      <Button className={s.mobileBtn} name='Получить консультацию' size='large' />
+      <a href='tel:+7 (771) 01 999 79'>
+        <Button className={s.mobileBtn} name='Получить консультацию' size='large' />
+      </a>
     </>
   );
 };

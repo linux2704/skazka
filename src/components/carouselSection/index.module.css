@@ -1,0 +1,123 @@
+.root {
+  background: #f4f9ff;
+  border-radius: 40px;
+  margin-top: 92px;
+}
+
+.inner {
+  padding: 64px;
+  display: flex;
+}
+
+.images {
+  max-width: 752px;
+  overflow: hidden;
+  max-height: 422px;
+}
+
+.images img,
+.images iframe {
+  width: 100%;
+  height: 422px;
+  min-width: 752px;
+}
+
+.images > div {
+  display: flex;
+  transition: 0.7s all ease-out;
+  flex: 1;
+}
+
+.right {
+  color: #62adf2;
+  text-align: right;
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.right h2 {
+  font-weight: 500;
+  font-size: 48px;
+  line-height: 60px;
+  margin-bottom: 16px;
+}
+
+.right p {
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 28px;
+}
+
+.controls {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.dots {
+  display: flex;
+  margin-left: auto;
+}
+
+.dots svg {
+  cursor: pointer;
+  margin-left: 16px;
+}
+
+.arrows {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.arrows svg {
+  margin-left: 32px;
+  cursor: pointer;
+}
+
+.rotate svg {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 666px) {
+  .inner {
+    flex-direction: column-reverse;
+    padding: 0;
+  }
+
+  .arrows {
+    display: none;
+  }
+
+  .right {
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .dots {
+    margin-left: 0;
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+
+  .dots svg {
+    margin-right: 16px;
+    margin-left: 0px;
+  }
+
+  .images {
+    max-width: 752px;
+    overflow: hidden;
+    max-height: 422px;
+    margin-left: -16px;
+    margin-right: -16px;
+  }
+
+  .images img,
+  .images iframe {
+    width: 100%;
+    height: 210px;
+    min-width: 100%;
+  }
+}

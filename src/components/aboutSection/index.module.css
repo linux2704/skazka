@@ -24,6 +24,10 @@
   width: 75%;
 }
 
+.item img {
+  max-width: 280px;
+}
+
 @media (max-width: 666px) {
   .main {
     margin-top: 32px;

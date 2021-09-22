@@ -24,8 +24,12 @@ export const Prices = () => {
           ))}
         </div>
         <div className={s.buttons}>
-          <Button name='Получить консультацию' size='large' variant='secondary' />
-          <Button name='Купить билеты' size='large' variant='primary'></Button>
+          <a href='tel:+7 (771) 01 999 79'>
+            <Button name='Получить консультацию' size='large' variant='secondary' />
+          </a>
+          <a href='#tickets'>
+            <Button name='Купить билеты' size='large' variant='primary'></Button>
+          </a>
         </div>
       </div>
     </section>
