@@ -1,4 +1,3 @@
-import { useCallback, useEffect } from "react";
 import { FC } from "react";
 import s from "../index.module.css";
 import { dates } from "../helpers/mocks";
@@ -45,10 +44,10 @@ const AvailableDates: FC<any> = ({ spekt, cdate, setCdate, setCtime }) => {
     <>
       {dates.map(({ id, title, date }) => {
         if ((spekt === 0 && [0, 1, 2].includes(id)) || (spekt === 1 && [10, 11].includes(id))) {
-          return <AvailableDates key={id} {...{ id, cdate, setCdate, setCtime, title, date }} />;
+          return <AvailableDate key={id} {...{ id, cdate, setCdate, setCtime, title, date }} />;
         }
         if (![0, 1].includes(spekt)) {
-          return <AvailableDates key={id} {...{ id, cdate, setCdate, setCtime, title, date }} />;
+          return <AvailableDate key={id} {...{ id, cdate, setCdate, setCtime, title, date }} />;
         }
         return null;
       })}

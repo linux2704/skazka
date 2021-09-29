@@ -35,7 +35,6 @@ const Carousel = () => {
     return <img src={media.image} alt='skazkin dom slide' />;
   }, []);
 
-  console.log(c);
   return (
     <section id='carousel' className={s.root}>
       <div className={s.inner}>
@@ -51,7 +50,11 @@ const Carousel = () => {
                 if (index === order) {
                   return activeIcon;
                 }
-                return <div onClick={() => setOrder(index)}>{notActiveIcon}</div>;
+                return (
+                  <div key={index} onClick={() => setOrder(index)}>
+                    {notActiveIcon}
+                  </div>
+                );
               })}
             </div>
             <div className={s.arrows}>

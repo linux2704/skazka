@@ -6,6 +6,7 @@ import img from "./tickets.png";
 import { spektakl, dates, time } from "./helpers/mocks";
 import { AvailableDates, Counter } from "./components";
 import { createPayment } from "./helpers/payment-helper";
+import { readCurrentInvoiceNumber, updateCurrentInvoiceNumber } from "./helpers/crud";
 
 export const Tickets = () => {
   const [spekt, setSpekt] = useState(0);
@@ -44,19 +45,44 @@ export const Tickets = () => {
     setFinal([adultTickets, childTickets, bothTickets]);
   }, []);
 
-  const testParams = {
-    grant_type: "client_credentials",
-    scope: "payment",
-    client_id: "test",
-    client_secret: "yF587AV9Ms94qN2QShFzVR3vFnWkhjbAK3sG",
-    invoiceID: "100000001",
-    amount: price,
-    currency: "KZT",
-    terminal: "67e34d63-102f-4bd1-898e-370781d0074d",
-  };
-
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    let invoiceID = "000000001";
+    await readCurrentInvoiceNumber().then(({ id }) => {
+      console.log("id", id);
+      const updated = String(id)
+        .split("")
+        .map((i: any) => {
+          if (i > 0) {
+            return ++i;
+          }
+          return i;
+        })
+        .join("");
+      invoiceID = updated;
+      console.log("updated: ", updated);
+    });
+    console.log("i id", invoiceID);
+    await updateCurrentInvoiceNumber(invoiceID);
+
+    if (!invoiceID) {
+      alert(
+        "Произошла ошибка при генерации инвойса. Пожалуйста свяжитесь с нами по телефону +7 (701) 04 999 79. Приносим свои извинения"
+      );
+      return null;
+    }
+
+    const testParams = {
+      grant_type: "client_credentials",
+      scope: "payment",
+      client_id: "skazkindom.kz",
+      client_secret: "D*qeEYgT!B93*wNw",
+      invoiceID,
+      amount: price,
+      currency: "KZT",
+      terminal: "6b6c5021-846e-4601-acaa-b22ab8095b1d",
+    };
+
     var formData = new FormData();
     Object.keys(testParams).forEach((key) => {
       // @ts-ignore

@@ -3,17 +3,22 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./app";
 import reportWebVitals from "./reportWebVitals";
-import firebase from "firebase/app";
+import { initializeApp } from "firebase/app";
 
-firebase.initializeApp({
-  apiKey: "AIzaSyDKK9ojaKxvMC7yrxAUmuh8UbyD6FYqEuQ",
-  authDomain: "skazkindom-3b02e.firebaseapp.com",
-  projectId: "skazkindom-3b02e",
-  storageBucket: "skazkindom-3b02e.appspot.com",
-  messagingSenderId: "1041917605489",
-  appId: "1:1041917605489:web:73fb54a3ac3d751a7d0dd0",
-  measurementId: "G-WG96SPMYMH",
-});
+const config = {
+  apiKey: "AIzaSyCMg2tKhj3WvLB2Azm6ty6JOwOqAmvL_DI",
+  authDomain: "skazka-1911f.firebaseapp.com",
+  projectId: "skazka-1911f",
+  storageBucket: "skazka-1911f.appspot.com",
+  messagingSenderId: "316258142402",
+  appId: "1:316258142402:web:babc8ba419ec5fd515935b",
+  measurementId: "G-0GNPBD3P9T",
+  databaseURL: "https://skazka-1911f-default-rtdb.europe-west1.firebasedatabase.app/",
+};
+
+// initializeApp(config);
+
+export const app = initializeApp(config);
 
 ReactDOM.render(
   <React.StrictMode>
