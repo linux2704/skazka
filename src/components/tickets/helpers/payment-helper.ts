@@ -22,7 +22,7 @@ const createPaymentObject = (auth, { invoiceId, amount, description }) => {
     auth,
   };
   // paymentObject.auth = auth;
-  console.log(paymentObject);
+  console.log('paymentObject', paymentObject);
   return paymentObject;
 };
 
@@ -34,6 +34,13 @@ export const createPayment = async (formdata, config) => {
     body: formdata,
   })
     .then((res) => res.json())
-    .then((auth) => pay(auth, config))
+    .then((auth) => {
+      console.log('auth', auth);
+      if (auth && auth.access_token){
+        pay(auth, config)
+      } else {
+        alert('lol');
+      }
+    })
     .catch((err) => console.error(err));
 };

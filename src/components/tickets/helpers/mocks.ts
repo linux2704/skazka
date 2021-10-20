@@ -1,10 +1,10 @@
 import { getDay, getExactDay, getDayTitle } from "../helpers/helpers";
 
 export const spektakl = [
-  { id: 0, name: "kolobok", title: "Спектакль “Колобок”" },
-  { id: 1, name: "aldar", title: "Спектакль “Алдар-Косе”" },
-  { id: 2, name: "travel", title: "Спектакль “Путешествие по сказкам”" },
-  { id: 3, name: "polyana", title: "Сказочная поляна" },
+  { id: 0, name: "kolobok", title: "Спектакль “Колобок”", availableDates: [0, 1, 2] },
+  { id: 1, name: "aldar", title: "Спектакль “Алдар-Косе”", availableDates: [10, 11] },
+  { id: 2, name: "travel", title: "Спектакль “Путешествие по сказкам”", availableDates: [0, 1, 2, 3, 4, 10, 11] },
+  { id: 3, name: "polyana", title: "Сказочная поляна", availableDates: [0, 1, 2, 3, 4, 10, 11] },
 ];
 
 export const dates = [
@@ -49,3 +49,9 @@ export const time = {
     { id: 1, slot: "15:00" },
   ],
 };
+
+export interface SProps {
+  id: string;
+  title: string;
+  availableDates?: number[];
+}

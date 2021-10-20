@@ -39,19 +39,15 @@ const Counter = ({ name, count, setCount }: any) => {
   );
 };
 
-const AvailableDates: FC<any> = ({ spekt, cdate, setCdate, setCtime }) => {
+const AvailableDates: FC<any> = ({ cdate, setCdate, setCtime, availableDates = [0, 1, 2, 3, 4, 10, 11] }) => {
   return (
     <>
       {dates.map(({ id, title, date }) => {
-        if ((spekt === 0 && [0, 1, 2].includes(id)) || (spekt === 1 && [10, 11].includes(id))) {
-          return <AvailableDate key={id} {...{ id, cdate, setCdate, setCtime, title, date }} />;
-        }
-        if (![0, 1].includes(spekt)) {
+        if (availableDates.includes(id)) {
           return <AvailableDate key={id} {...{ id, cdate, setCdate, setCtime, title, date }} />;
         }
         return null;
       })}
-      ;
     </>
   );
 };

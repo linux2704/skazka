@@ -6,7 +6,7 @@ let halyk;
 let LZString;
 
 (function (halyk) {
-  var isTest = true;
+  var isTest = false;
 
   var testConfig = {
     pageUrL: "https://test-epay.homebank.kz/payform/",

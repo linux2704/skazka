@@ -4,76 +4,70 @@ import img1 from "./1.png";
 import img2 from "./2.png";
 import img3 from "./3.png";
 import annImg from "./ann.png";
+import { useEffect, useState } from "react";
+import { getShows, ShowProps } from "helpers";
+
+const imgMap: any = {
+  0: img1,
+  1: img2,
+  2: img3,
+};
 
 export const Shows = () => {
+  const [shows, setShows] = useState<ShowProps[]>([]);
+
+  const mainShow = shows.find(({ isMain }) => isMain);
+
+  useEffect(() => {
+    const ff = async () => {
+      const { shows } = await getShows();
+      setShows(shows);
+    };
+
+    ff();
+  }, []);
+
   return (
     <>
       <section id='shows' className={s.shows}>
         <h2>Спектакли</h2>
         <div className={s.items}>
-          {items.map(({ id, image, title, desc, text, color }) => (
-            <div key={id} className={s.item}>
-              <img src={image} alt='' />
-              <div style={{ color }} className={s.content}>
-                <h3>{title}</h3>
-                <p className={s.desc}>{desc}</p>
-                <p className={s.text}>{text}</p>
-                <a href='#tickets'>
-                  <Button name='Купить билет' size='large' />
-                </a>
+          {shows.map(({ id, whom, title, isMain, content, color }, index) => {
+            if (isMain) {
+              return null;
+            }
+            return (
+              <div key={id} className={s.item}>
+                <img src={imgMap[index]} alt='' />
+                <div style={{ color: `#${color}` }} className={s.content}>
+                  <h3>{title}</h3>
+                  <p className={s.desc}>{whom}</p>
+                  <p className={s.text}>{content}</p>
+                  <a href='#tickets'>
+                    <Button name='Купить билет' size='large' />
+                  </a>
+                </div>
               </div>
+            );
+          })}
+        </div>
+      </section>
+      {mainShow ? (
+        <section className={["fluid", s.ann].join(" ")}>
+          <div className={s.inner}>
+            <div className={s.left}>
+              <h2>«{mainShow.title}»</h2>
+              <p>{mainShow.content}</p>
+              <a href='#tickets'>
+                <Button name='Купить билет' size='large' />
+              </a>
             </div>
-          ))}
-        </div>
-      </section>
-      <section className={["fluid", s.ann].join(" ")}>
-        <div className={s.inner}>
-          <div className={s.left}>
-            <h2>«Сказочная поляна»</h2>
-            <p>
-              Малыши могут поиграть на поляне, оформленной красивейшими декорациями, созданными по мотивам сказок
-              народов мира. Для знакомства детей с традициями нашего народа, собраны 3 юрты. В первой юрте, дети из
-              составных частей могут собирать игрушки в форме домашних животных. Во второй они знакомятся с
-              национальными музыкальными инструментами. Убранство третьей юрты демонстрирует традиционный быт нашего
-              народа»
-            </p>
-            <a href='#tickets'>
-              <Button name='Купить билет' size='large' />
-            </a>
+            <div className={s.right}>
+              <img src={annImg} alt='' />
+            </div>
           </div>
-          <div className={s.right}>
-            <img src={annImg} alt='' />
-          </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
     </>
   );
 };
-
-const items = [
-  {
-    id: 0,
-    image: img1,
-    title: "«Колобок»",
-    desc: "Детям от 1,5-5 лет",
-    text: "«Колобок Колобок...»... Знакомая песенка в «Сказкином доме» звучит! Это тот самый Колобок, который от дедушки и от бабушки ушел, по тропинке в лес покатился. Почему? Да маленький Колобок, шустрый, интересно ему мир поглядеть, да себя показать! Думал Колобок только о веселых приключениях, а о том, что далеко от дома опасности встретятся, и знать не хотел! Ждет его Лиса и съесть собирается! Кто же догонит Колобка, да от Лисы спасет?",
-    color: "#FF8863",
-  },
-  {
-    id: 1,
-    image: img2,
-    title: "«Алдар - Косе»",
-    desc: "Для детей от 4-12 лет",
-    text: "Самый любимый герой казахских сказок Алдар Косе! Веселый и находчивый, смелый и хитрый Алдар, расскажет ребятам о своих приключениях. Вместе в Алдаром Косе, зрители отправятся к жадному Баю, перехитрят черта, проучат спесивого Бая, узнают о «чудесной шубе» Алдара Косе. Встреча с любимыми сказкам, превратится в сказочное путешествие полное шуток, загадок и смеха.",
-    color: "#4F38AA",
-  },
-
-  {
-    id: 3,
-    image: img3,
-    title: "«Путешествие по сказкам»",
-    desc: "Интерактивный спектакль для детей от 2 – 6 лет",
-    text: "Приглашаем в путешествие по сказкам, на поиски страниц, которые пропали из «Волшебной книги». Гости окажутся в Царском тереме, Волшебном лесу, побывают в гостях у Бабы Яги, попадут в Чудесный сад и встретятся с Алдаром – Косе, отправятся в замок Кощея, погостят в морозном доме. Гости вернут пропавшие страницы из волшебной книги, вспомнят сказки, получат незабываемые впечатления от сказочного приключения!",
-    color: "#587FB9",
-  },
-];

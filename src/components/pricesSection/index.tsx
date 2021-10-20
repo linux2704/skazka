@@ -3,18 +3,38 @@ import s from "./index.module.css";
 import img1 from "./grown.png";
 import img2 from "./children.png";
 import img3 from "./together.png";
+import { useEffect, useState } from "react";
+import { getPrices } from "helpers";
+
+const imgsMap = {
+  img1,
+  img2,
+  img3,
+};
 
 export const Prices = () => {
+  const [content, setContent] = useState([]);
+
+  useEffect(() => {
+    const ff = async () => {
+      const { prices } = await getPrices();
+      setContent(prices);
+    };
+
+    ff();
+  }, []);
+
   return (
     <section id='price' className={[s.main, "fluid"].join(" ")}>
       <div className={s.inner}>
         <h2>Цены и Акции</h2>
         <div className={s.items}>
-          {items.map(({ id, img, text, price }) => (
+          {content.map(({ id, imgs, text, price }: any) => (
             <div className={s.item} key={id}>
-              <img src={img} alt='' />
+              {/* @ts-ignore */}
+              <img src={imgsMap[imgs.text]} alt='' />
               <p className={s.price}>{price}&nbsp;тенге</p>
-              <p className={s.text}>{text}</p>
+              <p className={s.text}>{text.text}</p>
             </div>
           ))}
         </div>
@@ -35,12 +55,6 @@ export const Prices = () => {
     </section>
   );
 };
-
-const items = [
-  { id: 0, img: img2, price: 5000, text: "Детский билет" },
-  { id: 1, img: img1, price: 2500, text: "Взрослый билет" },
-  { id: 2, img: img3, price: 6000, text: "Детский + взрослый билеты" },
-];
 
 const blocks = [
   "Сопровождающие<br/>взрослые приобретают билеты <strong>отдельно</strong>",

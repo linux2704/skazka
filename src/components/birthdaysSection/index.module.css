@@ -24,8 +24,7 @@
   position: relative;
 }
 
-.grid,
-.grid2 {
+.grid {
   display: grid;
   grid-template-columns: 50% 50%;
   width: 1284px;
@@ -53,25 +52,26 @@
   margin-top: 24px;
 }
 
-.main2 .inner h3,
-.main2 .inner .desc {
+.main:nth-child(odd) .inner h3,
+.main:nth-child(odd) .inner .desc {
   color: rgba(210, 194, 255, 1);
 }
 
-.main2 {
+.main:nth-child(odd) {
   background-color: #8169df;
   color: #fff;
   position: relative;
+  margin-top: 0;
 }
 .inner {
   position: relative;
 }
 
-.grid2 {
+.main:nth-child(odd) .grid {
   grid-auto-flow: dense;
 }
 
-.grid2 .inner {
+.main:nth-child(odd) .grid .inner {
   grid-column: 2;
 }
 
@@ -84,8 +84,7 @@
     margin-top: 32px;
   }
 
-  .grid,
-  .grid2 {
+  .grid {
     grid-template-columns: none;
     grid-auto-flow: row;
     width: 100%;
@@ -94,12 +93,11 @@
   .inner {
     padding: 32px 16px 0;
   }
-  .grid2 .inner {
+  .main:nth-child(odd) .grid .inner {
     grid-column: unset;
   }
 
-  .main img,
-  .main2 img {
+  .main img {
     width: 100%;
   }
 

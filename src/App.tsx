@@ -12,7 +12,7 @@ import { ToastContainer, toast } from "react-toastify";
 import s from "./app.module.css";
 import "react-toastify/dist/ReactToastify.css";
 
-function App() {
+const App = () => {
   useEffect(() => {
     const search = window.location.search;
     const isSuccess = search.endsWith("true");
@@ -56,6 +56,6 @@ function App() {
       <ToastContainer />
     </div>
   );
-}
+};
 
 export default App;

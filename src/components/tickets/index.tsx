@@ -1,15 +1,18 @@
-import { FormEvent, useCallback } from "react";
+import { FormEvent, useCallback, useEffect } from "react";
 import { useState } from "react";
 import { Button } from "../button";
 import s from "./index.module.css";
 import img from "./tickets.png";
-import { spektakl, dates, time } from "./helpers/mocks";
+import { dates, time, SProps } from "./helpers/mocks";
 import { AvailableDates, Counter } from "./components";
 import { createPayment } from "./helpers/payment-helper";
 import { readCurrentInvoiceNumber, updateCurrentInvoiceNumber } from "./helpers/crud";
+import { request } from "graphql-request";
+import { getTickets, URL } from "helpers";
 
 export const Tickets = () => {
-  const [spekt, setSpekt] = useState(0);
+  const [spektakl, setSpektakl] = useState<SProps[]>([]);
+  const [spekt, setSpekt] = useState("ckuylsdo0dyem0a61crnzm3hw");
   const [cdate, setCdate] = useState(0);
   const [ctime, setCtime] = useState(0);
   const [price, setPrice] = useState(0);
@@ -19,7 +22,7 @@ export const Tickets = () => {
   const chosenSlot = time[cdate];
 
   const getSpektName = () => {
-    const f = spektakl.find(({ id }) => id === spekt);
+    const f = spektakl?.find(({ id }) => id === spekt);
     return f?.title || "";
   };
 
@@ -49,20 +52,30 @@ export const Tickets = () => {
     e.preventDefault();
     let invoiceID = "000000001";
     await readCurrentInvoiceNumber().then(({ id }) => {
-      console.log("id", id);
-      const updated = String(id)
+      const temp: any[] = [];
+      const updated: any[] = [];
+
+      String(id)
         .split("")
-        .map((i: any) => {
-          if (i > 0) {
-            return ++i;
+        .forEach((num: any) => {
+          if (temp.length > 0) {
+            temp.push(+num);
+            return;
           }
-          return i;
-        })
-        .join("");
-      invoiceID = updated;
-      console.log("updated: ", updated);
+
+          if (+num > 0) {
+            temp.push(+num);
+            return;
+          }
+
+          if (+num === 0) {
+            updated.push(+num);
+            return;
+          }
+        });
+
+      invoiceID = updated.join("") + ++id;
     });
-    console.log("i id", invoiceID);
     await updateCurrentInvoiceNumber(invoiceID);
 
     if (!invoiceID) {
@@ -111,6 +124,20 @@ export const Tickets = () => {
     [tCount, setTcount, setPrice, getTicketsMap]
   );
 
+  const getAvailableDates = () => {
+    const f = spektakl?.find(({ id }) => spekt === id);
+    return f?.availableDates;
+  };
+
+  useEffect(() => {
+    const ff = async () => {
+      const { tickets } = await getTickets();
+      setSpektakl(tickets);
+    };
+
+    ff();
+  }, []);
+
   return (
     <section id='tickets' className={[s.tickets, "fluid"].join(" ")}>
       <div className={s.inner}>
@@ -120,7 +147,7 @@ export const Tickets = () => {
             <div className={s.fieldset}>
               <h3>Выберите спектакль</h3>
               <div className={s.spektakl}>
-                {spektakl.map(({ id, name, title }) => (
+                {spektakl?.map(({ id, title }) => (
                   <label
                     key={id}
                     className={id === spekt ? s.active : ""}
@@ -139,7 +166,7 @@ export const Tickets = () => {
               <h3>Выберите день и время</h3>
               <div className={s.dates}>
                 <span>День недели:</span>
-                <AvailableDates {...{ spekt, cdate, setCdate, setCtime }} />
+                <AvailableDates {...{ spekt, cdate, setCdate, setCtime }} availableDates={getAvailableDates()} />
               </div>
               <div className={s.time}>
                 <span>Время:</span>
