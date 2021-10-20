@@ -9,10 +9,10 @@ const URL = isDev ? devURL : prodURL;
 const createPaymentObject = (auth, { invoiceId, amount, description }) => {
   const paymentObject = {
     invoiceId,
-    backLink: "https://skazkindom.kz/success=true",
-    failureBackLink: "https://skazkindom.kz?success=false",
-    postLink: "https://skazkindom.kz?success=true",
-    failurePostLink: "https://skazkindom.kz?success=false",
+    backLink: "https://skazkindom.kz/",
+    failureBackLink: "https://skazkindom.kz/?result=error",
+    postLink: "https://skazkindom.kz/?result=success",
+    failurePostLink: "https://skazkindom.kz/?result=error",
     language: "RU",
     description,
     terminal: "6b6c5021-846e-4601-acaa-b22ab8095b1d",
@@ -21,8 +21,6 @@ const createPaymentObject = (auth, { invoiceId, amount, description }) => {
     cardSave: true,
     auth,
   };
-  // paymentObject.auth = auth;
-  console.log('paymentObject', paymentObject);
   return paymentObject;
 };
 
@@ -35,11 +33,11 @@ export const createPayment = async (formdata, config) => {
   })
     .then((res) => res.json())
     .then((auth) => {
-      console.log('auth', auth);
-      if (auth && auth.access_token){
-        pay(auth, config)
+      console.log("auth", auth);
+      if (auth && auth.access_token) {
+        pay(auth, config);
       } else {
-        alert('lol');
+        alert("lol");
       }
     })
     .catch((err) => console.error(err));
