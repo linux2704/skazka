@@ -11,26 +11,32 @@ import { Tickets } from "./components/tickets";
 import { ToastContainer, toast } from "react-toastify";
 import s from "./app.module.css";
 import "react-toastify/dist/ReactToastify.css";
+import { useHistory } from "react-router";
+
+const TIME = 5000;
 
 const App = () => {
+  const { push } = useHistory();
+
   useEffect(() => {
     const search = window.location.search;
-    const isSuccess = search.endsWith("true");
-    if (search) {
-      if (isSuccess) {
+    const params = new URLSearchParams(search);
+    const foo = params.get("result");
+    if (foo) {
+      if (foo === "success") {
         toast.success("Спасибо! Транзакция прошла успешно!", {
           position: "top-center",
-          autoClose: 5000,
+          autoClose: TIME,
           hideProgressBar: true,
           closeOnClick: false,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
         });
-      } else {
+      } else if (foo === "error") {
         toast.error("Что-то пошло не так. Пожалуйста попробуйте снова", {
           position: "top-center",
-          autoClose: 5000,
+          autoClose: TIME,
           hideProgressBar: false,
           closeOnClick: false,
           pauseOnHover: true,
@@ -38,8 +44,12 @@ const App = () => {
           progress: undefined,
         });
       }
+
+      setTimeout(() => {
+        push("/");
+      }, TIME);
     }
-  }, []);
+  }, [push]);
   return (
     <div className={s.app}>
       <Header />
