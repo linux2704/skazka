@@ -7,8 +7,7 @@ import { dates, time, SProps } from "./helpers/mocks";
 import { AvailableDates, Counter } from "./components";
 import { createPayment } from "./helpers/payment-helper";
 import { readCurrentInvoiceNumber, updateCurrentInvoiceNumber } from "./helpers/crud";
-import { request } from "graphql-request";
-import { getTickets, URL } from "helpers";
+import { getTickets } from "helpers";
 
 export const Tickets = () => {
   const [spektakl, setSpektakl] = useState<SProps[]>([]);
@@ -147,19 +146,25 @@ export const Tickets = () => {
             <div className={s.fieldset}>
               <h3>Выберите спектакль</h3>
               <div className={s.spektakl}>
-                {spektakl?.map(({ id, title }) => (
-                  <label
-                    key={id}
-                    className={id === spekt ? s.active : ""}
-                    onClick={() => {
-                      setSpekt(id);
-                      setCtime(0);
-                    }}
-                  >
-                    <input hidden type='radio' name='spektakl' />
-                    &nbsp;{title}
-                  </label>
-                ))}
+                {spektakl?.map(({ id, title }) => {
+                  if (!title) {
+                    return null;
+                  }
+
+                  return (
+                    <label
+                      key={id}
+                      className={id === spekt ? s.active : ""}
+                      onClick={() => {
+                        setSpekt(id);
+                        setCtime(0);
+                      }}
+                    >
+                      <input hidden type='radio' name='spektakl' />
+                      &nbsp;{title}
+                    </label>
+                  );
+                })}
               </div>
             </div>
             <div className={s.fieldset}>
