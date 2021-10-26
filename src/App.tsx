@@ -51,7 +51,7 @@ const App = () => {
     }
   }, [push]);
   return (
-    <div className={s.app}>
+    <div className={s.app} id='top'>
       <Header />
       <main>
         <MainSection />

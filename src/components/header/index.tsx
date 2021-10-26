@@ -12,9 +12,9 @@ export const Header = () => {
 
 export const SharedHeader = ({ color }: any) => (
   <div className={s.header}>
-    <div className={s.logo}>
+    <a href='#top' className={s.logo}>
       <img src={logo} alt='Сказкин Дом' />
-    </div>
+    </a>
     <nav>
       {menuItems.map(({ id, href, title }) => (
         <a style={{ color }} key={id} href={href}>

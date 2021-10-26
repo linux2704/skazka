@@ -9,7 +9,9 @@ export const Footer = () => {
         <div className={s.left}>
           ТОО "КИДБУРГ НУР-СУЛТАН"
           <br />
-          Договор офферты
+          <a href='/assets/skazkindom-rules.pdf' download>
+            Договор офферты
+          </a>
         </div>
         <div className={s.right}>
           <div className={s.address}>
