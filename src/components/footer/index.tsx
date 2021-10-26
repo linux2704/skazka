@@ -20,7 +20,7 @@ export const Footer = () => {
           </div>
           <div className={s.tel}>
             <a href='tel:+77710199979'>+7 (771) 01 999 79</a>
-            <a href='tel:+7 (701) 04 999 79'>+7 (701) 04 999 79</a>
+            <a href='tel:+77010499979'>+7 (701) 04 999 79</a>
           </div>
         </div>
       </div>
