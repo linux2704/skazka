@@ -74,7 +74,7 @@ const Carousel = () => {
 
 export { Carousel };
 
-const videos = [{ id: 0, video: "YjV0rtP8png" }];
+const videos = [{ id: 0, video: "iuK2iVv_oRs" }];
 
 const activeIcon = (
   <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
